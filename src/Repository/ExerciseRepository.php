@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\Exercise;
+use App\Entity\Level;
+use App\Entity\Subject;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -11,12 +13,23 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class ExerciseRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
-        parent::__construct($registry, Exercise::class);
-    }
+  public function __construct(ManagerRegistry $registry)
+  {
+    parent::__construct($registry, Exercise::class);
+  }
 
-//    /**
+  public function findBySubjectAndLevel(Subject $subject, Level $level): array
+  {
+    return $this->createQueryBuilder('e')
+      ->where('e.subject = :subject')
+      ->andWhere('e.level = :level')
+      ->setParameter('subject', $subject)
+      ->setParameter('level', $level)
+      ->getQuery()
+      ->getResult();
+  }
+
+  //    /**
 //     * @return Exercise[] Returns an array of Exercise objects
 //     */
 //    public function findByExampleField($value): array
@@ -31,7 +44,7 @@ class ExerciseRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Exercise
+  //    public function findOneBySomeField($value): ?Exercise
 //    {
 //        return $this->createQueryBuilder('e')
 //            ->andWhere('e.exampleField = :val')

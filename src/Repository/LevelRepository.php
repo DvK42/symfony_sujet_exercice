@@ -11,12 +11,21 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class LevelRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
-        parent::__construct($registry, Level::class);
-    }
+  public function __construct(ManagerRegistry $registry)
+  {
+    parent::__construct($registry, Level::class);
+  }
 
-//    /**
+  public function findMenuLevels(): array
+  {
+    return $this->createQueryBuilder('s')
+      ->orderBy('s.id', 'ASC')
+      ->getQuery()
+      ->getResult()
+    ;
+  }
+
+  //    /**
 //     * @return Level[] Returns an array of Level objects
 //     */
 //    public function findByExampleField($value): array
@@ -31,7 +40,7 @@ class LevelRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Level
+  //    public function findOneBySomeField($value): ?Level
 //    {
 //        return $this->createQueryBuilder('l')
 //            ->andWhere('l.exampleField = :val')

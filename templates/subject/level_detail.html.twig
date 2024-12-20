@@ -1,0 +1,15 @@
+{% include 'partials/header.html.twig' %}
+
+<h1>Exercices pour {{ subject.name }} - {{ level.name }}</h1>
+
+{% if exercises is not empty %}
+    <ul>
+        {% for exercise in exercises %}
+            <li>{{ exercise.name }}</li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>Aucun exercice disponible pour cette matière et ce niveau.</p>
+{% endif %}
+
+{% include 'partials/footer.html.twig' %}
