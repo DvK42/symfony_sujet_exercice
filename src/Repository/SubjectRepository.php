@@ -19,6 +19,16 @@ class SubjectRepository extends ServiceEntityRepository
   //    /**
 //     * @return Subject[] Returns an array of Subject objects
 //     */
+
+  public function findOneBySlug(string $slug): ?Subject
+  {
+    return $this->createQueryBuilder('s')
+      ->andWhere('s.slug = :slug')
+      ->setParameter('slug', $slug)
+      ->getQuery()
+      ->getOneOrNullResult();
+  }
+
   public function findMenuSubjects(): array
   {
     return $this->createQueryBuilder('s')

@@ -5,6 +5,7 @@ namespace App\DataFixtures;
 use App\Entity\Level;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 
 class LevelFixture extends Fixture
 {
@@ -28,6 +29,10 @@ class LevelFixture extends Fixture
     foreach ($levels as $levelName) {
       $level = new Level();
       $level->setName($levelName);
+      $slugger = new AsciiSlugger();
+      $slug = $slugger->slug($levelName, '-')->lower();
+      $level->setSlug($slug);
+
 
       $manager->persist($level);
     }

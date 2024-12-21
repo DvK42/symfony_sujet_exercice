@@ -4,12 +4,12 @@
 
 {% if exercises is not empty %}
     <ul>
-        {% for exercise in exercises %}
-            <li>{{ exercise.name }}</li>
+        {% for chapiter in chapiters %}
+            <li>{{ chapiter.name }}</li>
         {% endfor %}
     </ul>
 {% else %}
-    <p>Aucun exercice disponible pour cette matière et ce niveau.</p>
+    <p>Aucun chapitre disponible pour cette matière et ce niveau.</p>
 {% endif %}
 
 {% include 'partials/footer.html.twig' %}

@@ -1,0 +1,14 @@
+{% include 'partials/header.html.twig' %}
+
+ <h1>Exerices pour : {{ subject.name }} - {{ level.name }} - {{ chapiter.name }}</h1>
+
+<h2>Exercices disponibles</h2>
+<ul>
+    {% for exercise in exercises %}
+        <li>
+            <a href="{{ path('app_exercise_detail', { subject: subject.slug, level: level.slug, chapiter: chapiter.slug, exercise: exercise.slug }) }}">{{ exercise.name }}</a>            
+        </li>
+    {% endfor %}
+</ul>
+
+{% include 'partials/footer.html.twig' %}

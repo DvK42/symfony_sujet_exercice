@@ -9,6 +9,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 
 class ChapiterFixture extends Fixture implements DependentFixtureInterface
 {
@@ -23,10 +24,15 @@ class ChapiterFixture extends Fixture implements DependentFixtureInterface
     foreach ($subjects as $subject) {
       foreach ($levels as $level) {
         for ($i = 1; $i <= 5; $i++) {
+          $chapiterName = $faker->sentence(3);
+          $slugger = new AsciiSlugger();
+          $chapiterSlug = $slugger->slug($chapiterName, '-')->lower();
+
           $chapiter = new Chapiter();
-          $chapiter->setName("Chapitre $i - {$subject->getName()} ({$level->getName()})")
+          $chapiter->setName($chapiterName)
             ->setSubject($subject)
-            ->setLevel($level);
+            ->setLevel($level)
+            ->setSlug($chapiterSlug);
 
           $manager->persist($chapiter);
         }

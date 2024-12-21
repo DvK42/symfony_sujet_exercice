@@ -9,6 +9,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 
 class ExerciseFixture extends Fixture implements DependentFixtureInterface
 {
@@ -27,13 +28,18 @@ class ExerciseFixture extends Fixture implements DependentFixtureInterface
 
     foreach ($chapiters as $chapiter) {
       for ($i = 1; $i <= 3; $i++) {
+        $exerciseName = $faker->sentence(3);
+        $slugger = new AsciiSlugger();
+        $exerciseSlug = $slugger->slug($exerciseName, '-')->lower();
+
         $exercise = new Exercise();
-        $exercise->setName("Exercice $i - {$chapiter->getName()}")
+        $exercise->setName($exerciseName)
           ->setContent($faker->paragraphs(3, true))
           ->setSolution($faker->paragraphs(2, true))
           ->setChapiter($chapiter)
           ->setSubject($chapiter->getSubject())
-          ->setLevel($chapiter->getLevel());
+          ->setLevel($chapiter->getLevel())
+          ->setSlug($exerciseSlug);
 
         if (!empty($regularUsers)) {
           $author = $faker->randomElement($regularUsers);

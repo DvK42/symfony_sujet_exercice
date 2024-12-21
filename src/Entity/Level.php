@@ -30,6 +30,9 @@ class Level
   #[ORM\OneToMany(targetEntity: Chapiter::class, mappedBy: 'level', orphanRemoval: true)]
   private Collection $chapiters;
 
+  #[ORM\Column(length: 255, unique: true)]
+  private ?string $slug = null;
+
   public function __construct()
   {
     $this->exercises = new ArrayCollection();
@@ -109,6 +112,18 @@ class Level
         $chapiter->setLevel(null);
       }
     }
+
+    return $this;
+  }
+
+  public function getSlug(): ?string
+  {
+    return $this->slug;
+  }
+
+  public function setSlug(string $slug): static
+  {
+    $this->slug = $slug;
 
     return $this;
   }

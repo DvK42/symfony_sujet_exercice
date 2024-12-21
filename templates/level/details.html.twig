@@ -1,0 +1,14 @@
+{% include 'partials/header.html.twig' %}
+
+ <h1>{{ level.name }}</h1>
+
+<h2>Matières disponibles</h2>
+<ul>
+    {% for subject in subjects %}
+        <li>
+            <a href="{{ path('app_chapiter_list', { subject: subject.slug, level: level.slug }) }}">{{ subject.name }}</a>            
+        </li>
+    {% endfor %}
+</ul>
+
+{% include 'partials/footer.html.twig' %}

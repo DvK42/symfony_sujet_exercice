@@ -30,6 +30,9 @@ class Subject
   #[ORM\OneToMany(targetEntity: Exercise::class, mappedBy: 'subject', orphanRemoval: true)]
   private Collection $exercises;
 
+  #[ORM\Column(length: 255, unique: true)]
+  private ?string $slug = null;
+
   public function __construct()
   {
     $this->chapiters = new ArrayCollection();
@@ -109,6 +112,18 @@ class Subject
         $exercise->setSubject(null);
       }
     }
+
+    return $this;
+  }
+
+  public function getSlug(): ?string
+  {
+    return $this->slug;
+  }
+
+  public function setSlug(string $slug): static
+  {
+    $this->slug = $slug;
 
     return $this;
   }

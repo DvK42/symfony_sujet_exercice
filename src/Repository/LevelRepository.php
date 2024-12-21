@@ -16,6 +16,15 @@ class LevelRepository extends ServiceEntityRepository
     parent::__construct($registry, Level::class);
   }
 
+  public function findOneBySlug(string $slug): ?Level
+  {
+    return $this->createQueryBuilder('s')
+      ->andWhere('s.slug = :slug')
+      ->setParameter('slug', $slug)
+      ->getQuery()
+      ->getOneOrNullResult();
+  }
+
   public function findMenuLevels(): array
   {
     return $this->createQueryBuilder('s')

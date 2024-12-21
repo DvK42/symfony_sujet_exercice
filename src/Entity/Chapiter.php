@@ -32,6 +32,9 @@ class Chapiter
   #[ORM\JoinColumn(nullable: false)]
   private ?Level $level = null;
 
+  #[ORM\Column(length: 255, unique: true)]
+  private ?string $slug = null;
+
   public function __construct()
   {
     $this->exercises = new ArrayCollection();
@@ -104,6 +107,18 @@ class Chapiter
   public function setLevel(?Level $level): static
   {
     $this->level = $level;
+
+    return $this;
+  }
+
+  public function getSlug(): ?string
+  {
+    return $this->slug;
+  }
+
+  public function setSlug(string $slug): static
+  {
+    $this->slug = $slug;
 
     return $this;
   }

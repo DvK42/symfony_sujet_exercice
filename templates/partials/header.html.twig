@@ -4,6 +4,8 @@
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>School Train</title>
+      <link rel="stylesheet" href="{{ asset('build/app.css') }}">
+
       <style>
         .dropdown {
             position: relative;
@@ -56,7 +58,7 @@
                     <a href="#" style="text-decoration: none; color: #007bff;">Matières</a>
                     <div class="dropdown-content">
                         {% for subject in menuSubjects|slice(0, 10) %}
-                            <a href="{{ path('app_subject_details', { id: subject.id, name: subject.name }) }}">{{ subject.name }}</a>
+                            <a href="{{ path('app_subject_details', { slug: subject.slug }) }}">{{ subject.name }}</a>
                         {% endfor %}
                         <a href="{{ path('app_subject_list') }}" style="font-weight: bold;">Voir plus...</a>
                     </div>
@@ -64,7 +66,7 @@
                 <li class="dropdown"><a href="{{ path('app_level_list') }}" style="text-decoration: none; color: #007bff;">Niveaux</a>
                   <div class="dropdown-content">
                         {% for level in levels %}
-                            <a href="{{ path('app_level_details', { id: level.id, name: level.name }) }}">{{ level.name }}</a>
+                            <a href="{{ path('app_level_details', { slug: level.slug }) }}">{{ level.name }}</a>
                         {% endfor %}
                     </div>
                 </li>

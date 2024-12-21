@@ -5,6 +5,7 @@ namespace App\DataFixtures;
 use App\Entity\Subject;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 
 class SubjectFixture extends Fixture
 {
@@ -14,13 +15,13 @@ class SubjectFixture extends Fixture
       'Mathématiques',
       'Français',
       'Histoire-Géographie',
-      'Sciences de la Vie et de la Terre (SVT)',
+      'Sciences de la Vie et de la Terre',
       'Physique-Chimie',
       'Anglais',
       'Espagnol',
       'Allemand',
       'Philosophie',
-      'Éducation physique et sportive (EPS)',
+      'Éducation physique et sportive',
       'Technologie',
       'Informatique',
       'Économie',
@@ -31,8 +32,12 @@ class SubjectFixture extends Fixture
     ];
 
     foreach ($subjects as $subjectName) {
+      $slugger = new AsciiSlugger();
+      $subjectSlug = $slugger->slug($subjectName, '-')->lower();
       $subject = new Subject();
-      $subject->setName($subjectName);
+      $subject
+        ->setName($subjectName)
+        ->setSlug($subjectSlug);
       $manager->persist($subject);
     }
 
