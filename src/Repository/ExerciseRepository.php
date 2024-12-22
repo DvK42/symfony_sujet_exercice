@@ -44,6 +44,10 @@ class ExerciseRepository extends ServiceEntityRepository
   public function findByParamsSlug(Subject $subject, Level $level, Chapiter $chapiter, Exercise $exercise): ?Exercise
   {
     return $this->createQueryBuilder('e')
+      ->leftJoin('e.comments', 'c')
+      ->addSelect('c')
+      ->leftJoin('c.user', 'u')
+      ->addSelect('u')
       ->where('e.subject = :subject')
       ->andWhere('e.level = :level')
       ->andWhere('e.chapiter = :chapiter')
@@ -55,6 +59,28 @@ class ExerciseRepository extends ServiceEntityRepository
       ->getQuery()
       ->getOneOrNullResult();
   }
+
+  public function findByChapiterWithPagination(Chapiter $chapiter, int $limit, int $offset): array
+  {
+    return $this->createQueryBuilder('e')
+      ->where('e.chapiter = :chapiter')
+      ->setParameter('chapiter', $chapiter)
+      ->setFirstResult($offset)
+      ->setMaxResults($limit)
+      ->getQuery()
+      ->getResult();
+  }
+
+  public function countByChapiter(Chapiter $chapiter): int
+  {
+    return $this->createQueryBuilder('e')
+      ->select('COUNT(e.id)')
+      ->where('e.chapiter = :chapiter')
+      ->setParameter('chapiter', $chapiter)
+      ->getQuery()
+      ->getSingleScalarResult();
+  }
+
   //    /**
 //     * @return Exercise[] Returns an array of Exercise objects
 //     */

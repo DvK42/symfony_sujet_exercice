@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
@@ -19,18 +20,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
   private ?int $id = null;
 
   #[ORM\Column(length: 180)]
+  #[Assert\NotBlank(message: 'L\'email est requis.')]
+  #[Assert\Email(message: 'Veuillez saisir une adresse email valide.')]
+
   private ?string $email = null;
 
   /**
    * @var list<string> The user roles
    */
   #[ORM\Column]
-  private array $roles = [];
+  private array $roles = ['ROLE_USER'];
 
   /**
    * @var string The hashed password
    */
   #[ORM\Column]
+  #[Assert\NotBlank(message: 'Le mot de passe est requis.')]
+  #[Assert\Length(min: 6, minMessage: 'Le mot de passe doit contenir au moins {{ limit }} caractères.')]
+
   private ?string $password = null;
 
   #[ORM\Column(length: 255)]
@@ -54,10 +61,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
   #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'user', orphanRemoval: true)]
   private Collection $comments;
 
+  /**
+   * @var Collection<int, UserSolution>
+   */
+  #[ORM\OneToMany(targetEntity: UserSolution::class, mappedBy: 'user', orphanRemoval: true)]
+  private Collection $userSolutions;
+
+  #[ORM\Column(length: 255, nullable: true)]
+  private ?string $resetToken = null;
+
   public function __construct()
   {
     $this->exercises = new ArrayCollection();
     $this->comments = new ArrayCollection();
+    $this->userSolutions = new ArrayCollection();
   }
 
   public function getId(): ?int
@@ -230,5 +247,47 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     return $this;
+  }
+
+  /**
+   * @return Collection<int, UserSolution>
+   */
+  public function getUserSolutions(): Collection
+  {
+    return $this->userSolutions;
+  }
+
+  public function addUserSolution(UserSolution $userSolution): static
+  {
+    if (!$this->userSolutions->contains($userSolution)) {
+      $this->userSolutions->add($userSolution);
+      $userSolution->setUser($this);
+    }
+
+    return $this;
+  }
+
+  public function removeUserSolution(UserSolution $userSolution): static
+  {
+    if ($this->userSolutions->removeElement($userSolution)) {
+      // set the owning side to null (unless already changed)
+      if ($userSolution->getUser() === $this) {
+        $userSolution->setUser(null);
+      }
+    }
+
+    return $this;
+  }
+
+  public function getResetToken(): ?string
+  {
+      return $this->resetToken;
+  }
+
+  public function setResetToken(?string $resetToken): static
+  {
+      $this->resetToken = $resetToken;
+
+      return $this;
   }
 }

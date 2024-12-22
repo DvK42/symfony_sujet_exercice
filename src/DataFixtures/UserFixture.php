@@ -58,18 +58,18 @@ class UserFixture extends Fixture
         ->setFirstName($faker->firstName)
         ->setLastName($faker->lastName)
         ->setStudyLevel($faker->randomElement([
-          'CP',
-          'CE1',
-          'CE2',
-          'CM1',
-          'CM2',
-          '6ème',
-          '5ème',
-          '4ème',
-          '3ème',
+          'cp',
+          'ce1',
+          'ce2',
+          'cm1',
+          'cm2',
+          '6eme',
+          '5eme',
+          '4eme',
+          '3eme',
           '2nde',
-          '1ère',
-          'Terminale',
+          '1ere',
+          'terminale',
         ]))
         ->setRoles(['ROLE_USER']);
 

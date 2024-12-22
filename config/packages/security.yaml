@@ -41,6 +41,7 @@ security:
     - { path: ^/matieres, roles: ROLE_USER }
     - { path: ^/niveau, roles: ROLE_USER }
     - { path: ^/niveaux, roles: ROLE_USER }
+    - { path: ^/access-denied, roles: ROLE_BANNED }
 
   role_hierarchy:
     ROLE_ADMIN: [ROLE_USER]

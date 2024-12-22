@@ -4,6 +4,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: esgisymfoexercices
+      MAILER_DSN: "smtp://mailhog:1025"
     volumes:
       - db_data:/var/lib/mysql
     networks:
@@ -26,6 +27,8 @@ services:
     ports:
       - "1025:1025"
       - "8025:8025"
+    networks:
+      - esgisymfoexercices
 
 volumes:
   db_data:

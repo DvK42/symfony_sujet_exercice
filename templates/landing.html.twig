@@ -1,9 +1,67 @@
-{% include 'partials/header.html.twig' %}
+{% extends 'base.html.twig' %}
 
-    <main style="padding: 2rem; text-align: center;">
-        <h2>Bienvenue sur School Train</h2>
-        <p>Veuillez vous connecter pour accéder à votre espace personnel et découvrir nos exercices.</p>
-        <a href="{{ path('app_login') }}" style="padding: 1rem 2rem; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px; font-size: 1rem;">Se connecter</a>
-    </main>
+{% block content %}
+<main class="bg-gray-50 min-h-screen">
+    <!-- Hero Section -->
+    <section class="relative bg-blue-600 text-white">
+        <div class="container mx-auto px-6 py-16 text-center">
+            <h1 class="text-4xl font-bold mb-4">Bienvenue sur <span class="text-yellow-300">School Train</span></h1>
+            <p class="text-lg mb-8">
+                La plateforme d'exercices pour tous les niveaux, de CP à Terminale. Connectez-vous et commencez votre apprentissage dès aujourd'hui !
+            </p>
+            <a href="{{ path('app_login') }}" class="inline-block px-8 py-4 bg-yellow-400 text-blue-900 font-bold rounded-lg hover:bg-yellow-500">
+                Se connecter
+            </a>
+        </div>
+    </section>
 
-{% include 'partials/footer.html.twig' %}
+    <!-- Features Section -->
+    <section class="container mx-auto px-6 py-16 text-center">
+        <h2 class="text-3xl font-bold text-gray-800 mb-8">Pourquoi choisir School Train ?</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Feature 1 -->
+            <div class="bg-white shadow-lg rounded-lg p-6">
+                <div class="text-blue-600 mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M13 7H7v6h6V7z" />
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm-7-8a7 7 0 1114 0 7 7 0 01-14 0z" clip-rule="evenodd" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold mb-2">Exercices adaptés</h3>
+                <p class="text-gray-600">Des exercices pour tous les niveaux d'études, couvrant toutes les matières.</p>
+            </div>
+            <!-- Feature 2 -->
+            <div class="bg-white shadow-lg rounded-lg p-6">
+                <div class="text-blue-600 mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M12 4a4 4 0 00-8 0H3a1 1 0 100 2h1v5a3 3 0 003 3h4a3 3 0 003-3V6h1a1 1 0 100-2h-1a4 4 0 00-8 0z" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold mb-2">Suivi personnalisé</h3>
+                <p class="text-gray-600">Suivez vos progrès et améliorez vos performances avec nos outils d'analyse.</p>
+            </div>
+            <!-- Feature 3 -->
+            <div class="bg-white shadow-lg rounded-lg p-6">
+                <div class="text-blue-600 mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M10 3a7 7 0 100 14 7 7 0 000-14zm-1 9a1 1 0 102 0V8a1 1 0 10-2 0v4z" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold mb-2">Accessibilité</h3>
+                <p class="text-gray-600">Une interface simple et intuitive pour une navigation fluide.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action Section -->
+    <section class="bg-gray-800 text-white py-16">
+        <div class="container mx-auto text-center">
+            <h2 class="text-3xl font-bold mb-4">Prêt à commencer votre apprentissage ?</h2>
+            <p class="mb-8">Rejoignez des milliers d'élèves et améliorez vos compétences dès maintenant.</p>
+            <a href="{{ path('app_register') }}" class="inline-block px-8 py-4 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700">
+                Inscription gratuite
+            </a>
+        </div>
+    </section>
+</main>
+{% endblock %}

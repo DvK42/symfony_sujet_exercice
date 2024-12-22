@@ -1,14 +1,52 @@
-{% include 'partials/header.html.twig' %}
+{% extends 'base.html.twig' %}
 
- <h1>Exerices pour : {{ subject.name }} - {{ level.name }} - {{ chapiter.name }}</h1>
+{% block content %}
+<main class="bg-gray-50 min-h-screen">
+    <!-- Header Section -->
+    <section class="bg-green-600 text-white py-16">
+        <div class="container mx-auto text-center">
+            <h1 class="text-4xl font-bold mb-4">Exercices pour {{ subject.name }} - {{ level.name }}</h1>
+            <p class="text-lg">Explorez les exercices disponibles pour ce chapitre.</p>
+        </div>
+    </section>
 
-<h2>Exercices disponibles</h2>
-<ul>
-    {% for exercise in exercises %}
-        <li>
-            <a href="{{ path('app_exercise_detail', { subject: subject.slug, level: level.slug, chapiter: chapiter.slug, exercise: exercise.slug }) }}">{{ exercise.name }}</a>            
-        </li>
-    {% endfor %}
-</ul>
+    <!-- Exercices Section -->
+    <section class="container mx-auto py-16 px-6">
+        <h2 class="text-2xl font-bold text-gray-800 mb-8 text-center">Liste des exercices</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for exercise in exercises %}
+            <div class="bg-white shadow-lg rounded-lg p-6 hover:shadow-xl">
+                <h3 class="text-xl font-bold text-blue-600 mb-2">{{ exercise.name }}</h3>
+                <p class="text-gray-600 mb-4">{{ exercise.description|default('Aucune description disponible.') }}</p>
+                <a href="{{ path('app_exercise_detail', { subject: subject.slug, level: level.slug, chapiter: chapiter.slug, exercise: exercise.slug }) }}" 
+                   class="inline-block px-4 py-2 bg-blue-600 text-white font-bold rounded hover:bg-blue-700">
+                    Voir les détails
+                </a>
+            </div>
+            {% endfor %}
+        </div>
 
-{% include 'partials/footer.html.twig' %}
+        <!-- Pagination -->
+        <div class="mt-8 flex justify-center">
+            {% if currentPage > 1 %}
+                <a href="{{ path('app_exercise_list', { subject: subject.slug, level: level.slug, chapiter: chapiter.slug, page: currentPage - 1 }) }}" 
+                   class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">
+                    Précédent
+                </a>
+            {% endif %}
+
+            <span class="px-4 py-2 bg-blue-600 text-white rounded mx-2">
+                Page {{ currentPage }} sur {{ totalPages }}
+            </span>
+
+            {% if currentPage < totalPages %}
+                <a href="{{ path('app_exercise_list', { subject: subject.slug, level: level.slug, chapiter: chapiter.slug, page: currentPage + 1 }) }}" 
+                   class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">
+                    Suivant
+                </a>
+            {% endif %}
+        </div>
+    </section>
+</main>
+{% endblock %}

@@ -18,7 +18,6 @@ class ChapiterFixture extends Fixture implements DependentFixtureInterface
     $faker = Factory::create('fr_FR');
 
     $subjects = $manager->getRepository(Subject::class)->findAll();
-
     $levels = $manager->getRepository(Level::class)->findAll();
 
     foreach ($subjects as $subject) {
@@ -26,13 +25,16 @@ class ChapiterFixture extends Fixture implements DependentFixtureInterface
         for ($i = 1; $i <= 5; $i++) {
           $chapiterName = $faker->sentence(3);
           $slugger = new AsciiSlugger();
-          $chapiterSlug = $slugger->slug($chapiterName, '-')->lower();
+          $baseSlug = $slugger->slug($chapiterName, '-')->lower();
+
+          // Vérifier l'unicité du slug
+          $uniqueSlug = $this->generateUniqueSlug($manager, $baseSlug);
 
           $chapiter = new Chapiter();
           $chapiter->setName($chapiterName)
             ->setSubject($subject)
             ->setLevel($level)
-            ->setSlug($chapiterSlug);
+            ->setSlug($uniqueSlug);
 
           $manager->persist($chapiter);
         }
@@ -41,6 +43,24 @@ class ChapiterFixture extends Fixture implements DependentFixtureInterface
 
     $manager->flush();
   }
+
+  private function generateUniqueSlug(ObjectManager $manager, string $baseSlug): string
+  {
+    $repository = $manager->getRepository(Chapiter::class);
+    $slug = $baseSlug;
+    $suffix = 0;
+
+    do {
+      $existingSlug = $repository->findOneBy(['slug' => $slug]);
+      if ($existingSlug) {
+        $suffix++;
+        $slug = $baseSlug . '-' . $suffix;
+      }
+    } while ($existingSlug);
+
+    return $slug;
+  }
+
 
   public function getDependencies(): array
   {

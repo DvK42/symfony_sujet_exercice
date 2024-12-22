@@ -1,13 +1,133 @@
-{% include 'partials/header.html.twig' %}
+{% extends 'base.html.twig' %}
 
- <h1>{{ exercise.name }}</h1>
+{% block content %}
+<main class="bg-gray-50 min-h-screen">
+    <!-- Header Section -->
+    <section class="bg-blue-600 text-white py-16">
+        <div class="container mx-auto text-center">
+            <h1 class="text-4xl font-bold mb-4">{{ exercise.name }}</h1>
+            <p class="text-lg">Exercice pour {{ subject.name }} - {{ level.name }} - {{ chapiter.name }}</p>
+        </div>
+    </section>
 
-<h2>Sujet</h2>
+    <!-- Exercice Content Section -->
+    <section class="container mx-auto py-16 px-6">
+        <!-- Sujet -->
+        <div class="bg-white shadow-lg rounded-lg p-6 mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Sujet</h2>
+            <p class="text-gray-700">{{ exercise.content }}</p>
+        </div>
 
-<p>{{exercise.content}}</p>
+        <!-- Ma réponse -->
+        <div class="bg-white shadow-lg rounded-lg p-6 mb-8">
+            <h2 class="text-xl font-bold text-gray-800 mb-4">Ma réponse</h2>
+            {{ form_start(solutionForm, { attr: { class: "space-y-4" } }) }}
+                
+                <!-- Champ texte -->
+                <div>
+                    {{ form_label(solutionForm.content, null, { label_attr: { class: "block text-sm font-medium text-gray-700" } }) }}
+                    {{ form_widget(solutionForm.content, { attr: { class: "mt-1 block w-full rounded-md border-gray-700 shadow-sm focus:border-green-500 focus:ring-green-500 sm:text-sm p-4" } }) }}
+                    {{ form_errors(solutionForm.content, { attr: { class: "text-red-500 text-sm mt-1" } }) }}
+                </div>
+                
+                <!-- Bouton d'envoi -->
+                <div>
+                    <button type="submit" class="w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                        Soumettre
+                    </button>
+                </div>
+                
+                {{ form_end(solutionForm) }}
+        </div>
 
-<h2>Solution</h2>
+        <!-- Solution -->
+        <div class="bg-green-50 shadow-lg rounded-lg p-6 mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Solution</h2>
+            <div x-data="{ open: false }">
+                <!-- Bouton pour afficher/masquer la solution -->
+                <button 
+                    @click="open = !open"
+                    class="w-full bg-green-600 text-white py-2 px-4 rounded-lg shadow hover:bg-green-700 focus:outline-none focus:ring focus:ring-green-300">
+                    <span x-text="open ? 'Cacher la solution' : 'Voir la solution'"></span>
+                </button>
 
-<p>{{exercise.solution}}</p>
+                <!-- Contenu de la solution -->
+                <div x-show="open" x-transition class="mt-4 p-4 bg-white rounded-lg shadow-md">
+                    {% if exercise.solution %}
+                        <p class="text-gray-700">{{ exercise.solution }}</p>
+                    {% else %}
+                        <p class="text-gray-500 italic">La solution n'est pas encore disponible.</p>
+                    {% endif %}
+                </div>
+            </div>
+          </div>
 
-{% include 'partials/footer.html.twig' %}
+
+        <!-- Commentaires -->
+        <div class="bg-blue-50 shadow-lg rounded-lg p-6 space-y-6">
+            <!-- Titre principal -->
+            <h2 class="text-3xl font-extrabold text-gray-800">Commentaires ({{ nbComments }}) </h2>
+
+            <!-- Section d'ajout de commentaire -->
+            <div class="bg-white shadow-md rounded-lg p-6">
+                <h3 class="text-2xl font-semibold text-gray-800 mb-4">Ajouter un commentaire</h3>
+                {{ form_start(commentForm, { attr: { class: "space-y-4" } }) }}
+                
+                <!-- Champ texte -->
+                <div>
+                    {{ form_label(commentForm.content, null, { label_attr: { class: "block text-sm font-medium text-gray-700" } }) }}
+                    {{ form_widget(commentForm.content, { attr: { class: "mt-1 block w-full rounded-md border-gray-700 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-4" } }) }}
+                    {{ form_errors(commentForm.content, { attr: { class: "text-red-500 text-sm mt-1" } }) }}
+                </div>
+                
+                <!-- Bouton d'envoi -->
+                <div>
+                    <button type="submit" class="w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        Poster
+                    </button>
+                </div>
+                
+                {{ form_end(commentForm) }}
+            </div>
+
+            <!-- Liste des commentaires -->
+            {% if nbComments > 0 %}
+            <div class="bg-white shadow-md rounded-lg p-6">
+                <h3 class="text-2xl font-semibold text-gray-800 mb-4">Commentaires existants</h3>
+                {% if comments %}
+                    <ul class="space-y-4">
+                        {% for comment in comments %}
+                            <li class="border-b pb-4">
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-10 h-10 bg-blue-100 text-blue-600 font-bold flex items-center justify-center rounded-full">
+                                        {{ comment.user.firstName|first|upper }}{{ comment.user.lastName|first|upper }}
+                                    </div>
+                                    <div>
+                                        <p class="text-gray-800 font-semibold">{{ comment.user.firstName }} {{ comment.user.lastName }}</p>
+                                        <p class="text-gray-500 text-sm">{{ comment.createdAt|date('d/m/Y H:i') }}</p>
+                                    </div>
+                                </div>
+                                <p class="mt-2 text-gray-700">{{ comment.content }}</p>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="text-gray-500 italic">Aucun commentaire pour cet exercice.</p>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Formulaire pour poster un commentaire -->
+        {# <div class="bg-white shadow-lg rounded-lg p-6 mt-6">
+            <h2 class="text-xl font-bold text-gray-800 mb-4">Ajouter un commentaire</h2>
+            {{ form_start(commentForm) }}
+                {{ form_row(commentForm.content) }}
+                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                    Poster
+                </button>
+            {{ form_end(commentForm) }}
+        </div> #}
+    </section>
+</main>
+{% endblock %}

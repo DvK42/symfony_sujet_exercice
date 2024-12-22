@@ -44,30 +44,4 @@ class SubjectController extends AbstractController
       'levels' => $levels,
     ]);
   }
-
-  #[Route('/matiere/{subject}/{level}', name: 'app_subject_level_detail')]
-  public function levelDetails(
-    string $subject,
-    string $level,
-    ExerciseRepository $exerciseRepository,
-    LevelRepository $levelRepository,
-    SubjectRepository $subjectRepository,
-  ): Response {
-
-    $subject = $subjectRepository->findOneBySlug($subject);
-    $level = $levelRepository->findOneBySlug($level);
-
-    if (!$subject || !$level) {
-      throw $this->createNotFoundException(!$level ? 'Le niveau d\'étude demandé est introuvable.' : 'La matière demandée est introuvable.');
-    }
-
-    $exercises = $exerciseRepository->findBySubjectAndLevel($subject, $level);
-
-    return $this->render('subject/level_detail.html.twig', [
-      'subject' => $subject,
-      'level' => $level,
-      'exercises' => $exercises,
-    ]);
-
-  }
 }

@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+<main class="bg-gray-50 min-h-screen flex items-center justify-center">
+    <div class="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
+        <h1 class="text-2xl font-bold text-center mb-6">Créer un compte</h1>
+
+        {% if error %}
+            <div class="mb-4 p-4 text-sm text-red-700 bg-red-100 rounded-lg" role="alert">
+                {{ error.messageKey|trans(error.messageData, 'security') }}
+            </div>
+        {% endif %}
+
+        {{ form_start(registrationForm, {'attr': {'class': 'space-y-6'}}) }}
+
+        <!-- Champ Prénom -->
+        <div>
+            {{ form_label(registrationForm.firstName, null, {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+            {{ form_widget(registrationForm.firstName, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'}}) }}
+            {{ form_errors(registrationForm.firstName, {'attr': {'class': 'text-red-500 text-sm'}}) }}
+        </div>
+
+        <!-- Champ Nom -->
+        <div>
+            {{ form_label(registrationForm.lastName, null, {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+            {{ form_widget(registrationForm.lastName, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'}}) }}
+            {{ form_errors(registrationForm.lastName, {'attr': {'class': 'text-red-500 text-sm'}}) }}
+        </div>
+        
+        <!-- Champ Niveau d'étude -->
+        <div>
+            {{ form_label(registrationForm.studyLevel, null, {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+            {{ form_widget(registrationForm.studyLevel, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'}}) }}
+            {{ form_errors(registrationForm.studyLevel, {'attr': {'class': 'text-red-500 text-sm'}}) }}
+        </div>
+        
+        <!-- Champ email -->
+        <div>
+            {{ form_label(registrationForm.email, null, {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+            {{ form_widget(registrationForm.email, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'}}) }}
+            {{ form_errors(registrationForm.email, {'attr': {'class': 'text-red-500 text-sm'}}) }}
+        </div>
+
+        <!-- Champ mot de passe -->
+        <div>
+            {{ form_label(registrationForm.password.first, null, {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+            {{ form_widget(registrationForm.password.first, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'}}) }}
+            {{ form_errors(registrationForm.password.first, {'attr': {'class': 'text-red-500 text-sm'}}) }}
+        </div>
+
+        <!-- Champ confirmation mot de passe -->
+        <div>
+            {{ form_label(registrationForm.password.second, null, {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+            {{ form_widget(registrationForm.password.second, {'attr': {'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'}}) }}
+            {{ form_errors(registrationForm.password.second, {'attr': {'class': 'text-red-500 text-sm'}}) }}
+        </div>
+
+        <!-- Bouton de soumission -->
+        <div>
+            <button type="submit" class="w-full bg-indigo-600 text-white py-2 px-4 rounded-md shadow hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                S'inscrire
+            </button>
+        </div>
+
+    {{ form_end(registrationForm) }}
+
+        <p class="mt-6 text-sm text-gray-600 text-center">
+            Vous avez déjà un compte ? <a href="{{ path('app_login') }}" class="text-blue-600 hover:underline">Connectez-vous ici</a>.
+        </p>
+    </div>
+</main>
+{% endblock %}

@@ -38,6 +38,7 @@ class CommentFixture extends Fixture implements DependentFixtureInterface
         $author = $faker->randomElement($regularUsers);
         $comment->setUser($author);
       }
+      $comment->setCreatedAt(new \DateTimeImmutable());
 
       $manager->persist($comment);
 

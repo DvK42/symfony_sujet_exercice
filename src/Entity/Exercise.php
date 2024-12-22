@@ -49,9 +49,16 @@ class Exercise
   #[ORM\Column(length: 255, unique: true)]
   private ?string $slug = null;
 
+  /**
+   * @var Collection<int, UserSolution>
+   */
+  #[ORM\OneToMany(targetEntity: UserSolution::class, mappedBy: 'exercise', orphanRemoval: true)]
+  private Collection $userSolutions;
+
   public function __construct()
   {
     $this->comments = new ArrayCollection();
+    $this->userSolutions = new ArrayCollection();
   }
 
   public function getId(): ?int
@@ -183,5 +190,35 @@ class Exercise
     $this->slug = $slug;
 
     return $this;
+  }
+
+  /**
+   * @return Collection<int, UserSolution>
+   */
+  public function getUserSolutions(): Collection
+  {
+      return $this->userSolutions;
+  }
+
+  public function addUserSolution(UserSolution $userSolution): static
+  {
+      if (!$this->userSolutions->contains($userSolution)) {
+          $this->userSolutions->add($userSolution);
+          $userSolution->setExercise($this);
+      }
+
+      return $this;
+  }
+
+  public function removeUserSolution(UserSolution $userSolution): static
+  {
+      if ($this->userSolutions->removeElement($userSolution)) {
+          // set the owning side to null (unless already changed)
+          if ($userSolution->getExercise() === $this) {
+              $userSolution->setExercise(null);
+          }
+      }
+
+      return $this;
   }
 }

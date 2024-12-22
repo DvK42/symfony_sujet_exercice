@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Comment;
+use App\Entity\Exercise;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -11,12 +12,21 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class CommentRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
-        parent::__construct($registry, Comment::class);
-    }
+  public function __construct(ManagerRegistry $registry)
+  {
+    parent::__construct($registry, Comment::class);
+  }
 
-//    /**
+  public function findByExercise(Exercise $exercise): array
+  {
+    return $this->createQueryBuilder('c')
+      ->andWhere('c.exercise = :exercise')
+      ->setParameter('exercise', $exercise)
+      ->orderBy('c.createdAt', 'DESC')
+      ->getQuery()
+      ->getResult();
+  }
+  //    /**
 //     * @return Comment[] Returns an array of Comment objects
 //     */
 //    public function findByExampleField($value): array
@@ -31,7 +41,7 @@ class CommentRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Comment
+  //    public function findOneBySomeField($value): ?Comment
 //    {
 //        return $this->createQueryBuilder('c')
 //            ->andWhere('c.exampleField = :val')

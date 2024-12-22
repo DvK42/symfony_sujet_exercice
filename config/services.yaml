@@ -23,3 +23,7 @@ services:
     arguments:
       $subjectRepository: '@App\Repository\SubjectRepository'
     tags: ["twig.extension"]
+
+  App\EventListener\BannedUserListener:
+    tags:
+      - { name: kernel.event_listener, method: onKernelRequest, event: kernel.request }
