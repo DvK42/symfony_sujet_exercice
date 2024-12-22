@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des commentaires{% endblock %}
+
+{% block content %}
+<div class="bg-gray-50 p-6 rounded-lg shadow-lg">
+    <h1 class="text-2xl font-bold mb-6 text-gray-800">Liste des commentaires</h1>
+
+    <!-- Bouton Ajouter un commentaire -->
+    <div class="mb-6">
+        <a href="{{ path('admin_comment_new') }}" class="bg-indigo-600 text-white px-4 py-2 rounded shadow hover:bg-indigo-700">
+            + Ajouter un commentaire
+        </a>
+    </div>
+
+    <!-- Table des commentaires -->
+    <div class="overflow-x-auto">
+        <table class="min-w-full bg-white border border-gray-200 shadow-sm rounded-lg">
+            <thead class="bg-gray-100">
+                <tr>
+                    <th class="py-3 px-4 text-left text-gray-600 font-semibold">ID</th>
+                    <th class="py-3 px-4 text-left text-gray-600 font-semibold">Contenu</th>
+                    <th class="py-3 px-4 text-left text-gray-600 font-semibold">Utilisateur</th>
+                    <th class="py-3 px-4 text-left text-gray-600 font-semibold">Exercice</th>
+                    <th class="py-3 px-4 text-center text-gray-600 font-semibold">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for comment in comments %}
+                    <tr class="border-t">
+                        <td class="py-3 px-4 text-gray-700">{{ comment.id }}</td>
+                        <td class="py-3 px-4 text-gray-700">
+                            {{ comment.content|split(' ', 6)|slice(0, 5)|join(' ') ~ (comment.content|split(' ', 6)|length > 5 ? '...' : '') }}
+                        </td>
+                        <td class="py-3 px-4 text-gray-700">{{ comment.user.firstName }} {{ comment.user.lastName }}</td>
+                        <td class="py-3 px-4 text-gray-700">{{ comment.exercise.name }}</td>
+                        <td class="py-3 px-4 text-center">
+                            <a href="{{ path('admin_comment_show', {'id': comment.id}) }}" class="text-blue-600 hover:underline">Voir</a>
+                            <a href="{{ path('admin_comment_edit', {'id': comment.id}) }}" class="text-green-600 hover:underline ml-4">Modifier</a>
+                            <form method="post" action="{{ path('admin_comment_delete', {'id': comment.id}) }}" style="display:inline;" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce commentaire ?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ comment.id) }}">
+                                <button type="submit" class="text-red-600 hover:underline ml-4">Supprimer</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="5" class="text-center py-3 text-gray-500 italic">Aucun commentaire trouvé.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

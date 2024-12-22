@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon Profil{% endblock %}
+
+{% block content %}
+<div class="flex items-center justify-center min-h-screen bg-gray-100">
+    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">Mon Profil</h1>
+
+        <div class="mb-6 space-y-4">
+            <p class="text-lg text-gray-700"><strong>Nom :</strong> {{ user.lastName }}</p>
+            <p class="text-lg text-gray-700"><strong>Prénom :</strong> {{ user.firstName }}</p>
+            <p class="text-lg text-gray-700"><strong>Email :</strong> {{ user.email }}</p>
+            <p class="text-lg text-gray-700"><strong>Niveau d'étude :</strong> {{ user.studyLevel ? user.studyLevel : 'Non spécifié' }}</p>
+        </div>
+
+        <a href="{{ path('app_profile_edit') }}" class="block w-full bg-indigo-600 text-white text-center py-3 rounded-lg shadow hover:bg-indigo-700">
+            Modifier mon profil
+        </a>
+    </div>
+</div>
+{% endblock %}

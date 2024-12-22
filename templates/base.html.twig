@@ -1,6 +1,106 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Train</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+<!-- Toastr CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+<!-- Toastr JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" defer></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            toastr.options = {
+                "closeButton": true,
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            };
+        });
+    </script>
+</head>
+<body class="bg-gray-100 min-h-screen">
 {% include 'partials/header.html.twig' %}
 
-{% block content %}
-{% endblock content %}
+    <div class="flex">
+        <!-- Sidebar uniquement pour les pages admin -->
+          {% if is_admin_page is defined and is_admin_page %}
+            <aside class="w-64 bg-gray-800 text-white min-h-screen p-4">
+                <h2 class="text-2xl font-bold mb-6">Administration</h2>
+                <nav>
+                    <ul class="space-y-4">
+                        <li>
+                            <a href="{{ path('app_admin_dashboard') }}" class="block py-2 px-4 rounded hover:bg-gray-700">
+                                Tableau de bord
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ path('admin_comment_index') }}" class="block py-2 px-4 rounded hover:bg-gray-700">
+                                Commentaires
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ path('admin_exercise_index') }}" class="block py-2 px-4 rounded hover:bg-gray-700">
+                                Exercices
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ path('admin_user_index') }}" class="block py-2 px-4 rounded hover:bg-gray-700">
+                                Utilisateurs
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ path('admin_user_solution_index') }}" class="block py-2 px-4 rounded hover:bg-gray-700">
+                                Réponses
+                            </a>
+                        </li>
+                        <p class="opacity-50 pt-6">Listes</p>
+                        <li>
+                            <a href="{{ path('admin_chapiter_index') }}" class="block py-2 px-4 rounded hover:bg-gray-700">
+                                Chapitres
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ path('admin_subject_index') }}" class="block py-2 px-4 rounded hover:bg-gray-700">
+                                Matières
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ path('admin_level_index') }}" class="block py-2 px-4 rounded hover:bg-gray-700">
+                                Niveaux d'études
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </aside>
+        {% endif %}
+
+        <!-- Contenu principal -->
+        <div class="flex-1">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    toastr["{{ label }}"]("{{ message|e('js') }}");
+                {% endfor %}
+            {% endfor %}
+        });
+    </script>
+
+    {% block javascripts %}{% endblock %}
 
 {% include 'partials/footer.html.twig' %}

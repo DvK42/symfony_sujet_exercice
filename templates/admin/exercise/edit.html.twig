@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier l'exercice{% endblock %}
+
+{% block content %}
+<div class="bg-gray-50 p-6 rounded-lg shadow-lg mx-auto">
+    <h1 class="text-2xl font-bold mb-6 text-gray-800">Modifier l'exercice</h1>
+
+    <!-- Formulaire de modification -->
+    <div class="bg-white p-6 rounded-lg shadow-sm">
+        {{ include('admin/exercise/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+    </div>
+
+    <!-- Actions supplémentaires -->
+    <div class="mt-6 flex justify-between items-center">
+        <a href="{{ path('admin_exercise_index') }}" class="text-indigo-600 hover:underline">
+            ← Retour à la liste
+        </a>
+
+        {{ include('admin/exercise/_delete_form.html.twig') }}
+    </div>
+</div>
+{% endblock %}

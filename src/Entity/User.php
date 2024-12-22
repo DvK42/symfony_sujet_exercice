@@ -40,6 +40,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
   private ?string $password = null;
 
+  #[Assert\NotBlank(message: 'Le mot de passe est requis.', groups: ['registration', 'password_update'])]
+  #[Assert\Length(min: 6, minMessage: 'Le mot de passe doit contenir au moins {{ limit }} caractères.', groups: ['registration', 'password_update'])]
+  private ?string $plainPassword = null;
+
+
   #[ORM\Column(length: 255)]
   private ?string $firstName = null;
 
@@ -281,13 +286,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
   public function getResetToken(): ?string
   {
-      return $this->resetToken;
+    return $this->resetToken;
   }
 
   public function setResetToken(?string $resetToken): static
   {
-      $this->resetToken = $resetToken;
+    $this->resetToken = $resetToken;
 
-      return $this;
+    return $this;
+  }
+
+  /**
+   * Get the value of plainPassword
+   */
+  public function getPlainPassword(): string
+  {
+    return $this->plainPassword;
+  }
+
+  /**
+   * Set the value of plainPassword
+   *
+   * @return  self
+   */
+  public function setPlainPassword($plainPassword): static
+  {
+    $this->plainPassword = $plainPassword;
+
+    return $this;
   }
 }

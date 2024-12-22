@@ -22,7 +22,8 @@ class Exercise
   #[ORM\Column(type: Types::TEXT)]
   private ?string $content = null;
 
-  #[ORM\ManyToOne(inversedBy: 'exercises')]
+  #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'exercises')]
+  #[ORM\JoinColumn(nullable: false, onDelete: "CASCADE")]
   private ?User $author = null;
 
   #[ORM\ManyToOne(inversedBy: 'exercises')]
@@ -197,28 +198,28 @@ class Exercise
    */
   public function getUserSolutions(): Collection
   {
-      return $this->userSolutions;
+    return $this->userSolutions;
   }
 
   public function addUserSolution(UserSolution $userSolution): static
   {
-      if (!$this->userSolutions->contains($userSolution)) {
-          $this->userSolutions->add($userSolution);
-          $userSolution->setExercise($this);
-      }
+    if (!$this->userSolutions->contains($userSolution)) {
+      $this->userSolutions->add($userSolution);
+      $userSolution->setExercise($this);
+    }
 
-      return $this;
+    return $this;
   }
 
   public function removeUserSolution(UserSolution $userSolution): static
   {
-      if ($this->userSolutions->removeElement($userSolution)) {
-          // set the owning side to null (unless already changed)
-          if ($userSolution->getExercise() === $this) {
-              $userSolution->setExercise(null);
-          }
+    if ($this->userSolutions->removeElement($userSolution)) {
+      // set the owning side to null (unless already changed)
+      if ($userSolution->getExercise() === $this) {
+        $userSolution->setExercise(null);
       }
+    }
 
-      return $this;
+    return $this;
   }
 }

@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier une matière{% endblock %}
+
+{% block content %}
+<div class="bg-gray-50 p-6 rounded-lg shadow-lg mx-auto">
+    <h1 class="text-2xl font-bold mb-6 text-gray-800">Modifier la matière</h1>
+
+    <!-- Formulaire de modification -->
+    <div class="bg-white p-6 rounded-lg shadow-sm">
+        {{ include('admin/subject/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+    </div>
+
+    <!-- Lien retour -->
+    <div class="mt-6 flex justify-between items-center">
+        <a href="{{ path('admin_subject_index') }}" class="text-indigo-600 hover:underline">
+            ← Retour à la liste
+        </a>
+
+        <!-- Bouton de suppression -->
+        {{ include('admin/subject/_delete_form.html.twig') }}
+    </div>
+</div>
+{% endblock %}

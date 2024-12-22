@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des utilisateurs{% endblock %}
+
+{% block content %}
+<div class="bg-gray-50 p-6 rounded-lg shadow-lg">
+    <h1 class="text-2xl font-bold mb-6">Liste des utilisateurs</h1>
+
+    <!-- Bouton Ajouter un utilisateur -->
+    <div class="mb-6">
+        <a href="{{ path('admin_user_new') }}" class="bg-indigo-600 text-white px-4 py-2 rounded shadow hover:bg-indigo-700">
+            + Ajouter un utilisateur
+        </a>
+    </div>
+
+    <!-- Table des utilisateurs -->
+    <div class="overflow-x-auto">
+        <table class="min-w-full bg-white border border-gray-200 shadow-sm rounded-lg">
+            <thead class="bg-gray-100">
+                <tr>
+                    <th class="py-3 px-4 text-left text-gray-600 font-semibold">ID</th>
+                    <th class="py-3 px-4 text-left text-gray-600 font-semibold">Email</th>
+                    <th class="py-3 px-4 text-left text-gray-600 font-semibold">Rôles</th>
+                    <th class="py-3 px-4 text-left text-gray-600 font-semibold">Prénom</th>
+                    <th class="py-3 px-4 text-left text-gray-600 font-semibold">Nom</th>
+                    <th class="py-3 px-4 text-left text-gray-600 font-semibold">Niveau d'étude</th>
+                    <th class="py-3 px-4 text-center text-gray-600 font-semibold">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                    <tr class="border-t">
+                        <td class="py-3 px-4 text-gray-700">{{ user.id }}</td>
+                        <td class="py-3 px-4 text-gray-700">{{ user.email }}</td>
+                        <td class="py-3 px-4 text-gray-700">{{ user.roles ? user.roles|join(', ') : '' }}</td>
+                        <td class="py-3 px-4 text-gray-700">{{ user.firstName }}</td>
+                        <td class="py-3 px-4 text-gray-700">{{ user.lastName }}</td>
+                        <td class="py-3 px-4 text-gray-700">{{ user.studyLevel }}</td>
+                        <td class="py-3 px-4 text-center">
+                            <a href="{{ path('admin_user_show', {'id': user.id}) }}" class="text-blue-600 hover:underline">Voir</a>
+                            <a href="{{ path('admin_user_edit', {'id': user.id}) }}" class="text-green-600 hover:underline ml-4">Modifier</a>
+                            <form method="post" action="{{ path('admin_user_delete', {'id': user.id}) }}" style="display:inline;" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+                                <button type="submit" class="text-red-600 hover:underline ml-4">Supprimer</button>
+                            </form>
+                            {% if 'ROLE_BANNED' in user.roles %}
+                                <form method="post" action="{{ path('admin_user_toggle_ban', {'id': user.id}) }}" style="display:inline;" onsubmit="return confirm('Êtes-vous sûr de vouloir débloquer cet utilisateur ?');">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('toggle-ban-' ~ user.id) }}">
+                                    <button type="submit" class="text-red">
+                                        Débloquer
+                                    </button>
+                                </form>
+                            {% else %}
+                                <form method="post" action="{{ path('admin_user_toggle_ban', {'id': user.id}) }}" style="display:inline;" onsubmit="return confirm('Êtes-vous sûr de vouloir bloquer cet utilisateur ?');">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('toggle-ban-' ~ user.id) }}">
+                                    <button type="submit" class="text-red">
+                                        Bloquer
+                                    </button>
+                                </form>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="9" class="text-center py-3 text-gray-500 italic">Aucun utilisateur trouvé.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

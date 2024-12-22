@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails de la solution utilisateur{% endblock %}
+
+{% block content %}
+<div class="bg-gray-50 p-6 rounded-lg shadow-lg mx-auto">
+    <h1 class="text-2xl font-bold mb-6 text-gray-800">Détails de la solution utilisateur</h1>
+
+    <!-- Table des informations -->
+    <table class="min-w-full bg-white border border-gray-200 shadow-sm rounded-lg mb-6">
+        <tbody>
+            <tr class="border-b">
+                <th class="py-3 px-4 text-left text-gray-600 font-semibold">ID</th>
+                <td class="py-3 px-4 text-gray-700">{{ user_solution.id }}</td>
+            </tr>
+            <tr class="border-b">
+                <th class="py-3 px-4 text-left text-gray-600 font-semibold">Contenu</th>
+                <td class="py-3 px-4 text-gray-700">{{ user_solution.content }}</td>
+            </tr>
+            <tr class="border-b">
+                <th class="py-3 px-4 text-left text-gray-600 font-semibold">Créé le</th>
+                <td class="py-3 px-4 text-gray-700">{{ user_solution.createdAt ? user_solution.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Actions -->
+    <div class="flex justify-between items-center">
+        <a href="{{ path('admin_user_solution_index') }}" class="text-indigo-600 hover:underline">
+            ← Retour à la liste
+        </a>
+        <div class="flex items-center space-x-4">
+            <a href="{{ path('admin_user_solution_edit', {'id': user_solution.id}) }}" class="bg-green-600 text-white px-4 py-2 rounded shadow hover:bg-green-700">
+                Modifier
+            </a>
+            {{ include('admin/user_solution/_delete_form.html.twig') }}
+        </div>
+    </div>
+</div>
+{% endblock %}

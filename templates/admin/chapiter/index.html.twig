@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des chapitres{% endblock %}
+
+{% block content %}
+<div class="bg-gray-50 p-6 rounded-lg shadow-lg">
+    <h1 class="text-2xl font-bold mb-6 text-gray-800">Liste des chapitres</h1>
+
+    <!-- Bouton Ajouter un chapitre -->
+    <div class="mb-6">
+        <a href="{{ path('admin_chapiter_new') }}" class="bg-indigo-600 text-white px-4 py-2 rounded shadow hover:bg-indigo-700">
+            + Ajouter un chapitre
+        </a>
+    </div>
+
+    <!-- Table des chapitres -->
+    <div class="overflow-x-auto">
+        <table class="min-w-full bg-white border border-gray-200 shadow-sm rounded-lg">
+            <thead class="bg-gray-100">
+                <tr>
+                    <th class="py-3 px-4 text-left text-gray-600 font-semibold">ID</th>
+                    <th class="py-3 px-4 text-left text-gray-600 font-semibold">Nom</th>
+                    <th class="py-3 px-4 text-left text-gray-600 font-semibold">Matière</th>
+                    <th class="py-3 px-4 text-left text-gray-600 font-semibold">Niveau</th>
+                    <th class="py-3 px-4 text-center text-gray-600 font-semibold">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for chapiter in chapiters %}
+                    <tr class="border-t">
+                        <td class="py-3 px-4 text-gray-700">{{ chapiter.id }}</td>
+                        <td class="py-3 px-4 text-gray-700">{{ chapiter.name }}</td>
+                        <td class="py-3 px-4 text-gray-700">{{ chapiter.subject.name }}</td>
+                        <td class="py-3 px-4 text-gray-700">{{ chapiter.level.name }}</td>
+                        <td class="py-3 px-4 text-center">
+                            <a href="{{ path('admin_chapiter_show', {'id': chapiter.id}) }}" class="text-blue-600 hover:underline">Voir</a>
+                            <a href="{{ path('admin_chapiter_edit', {'id': chapiter.id}) }}" class="text-green-600 hover:underline ml-4">Modifier</a>
+                            <form method="post" action="{{ path('admin_chapiter_delete', {'id': chapiter.id}) }}" style="display:inline;" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce chapitre ?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ chapiter.id) }}">
+                                <button type="submit" class="text-red-600 hover:underline ml-4">Supprimer</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="6" class="text-center py-3 text-gray-500 italic">Aucun chapitre trouvé.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

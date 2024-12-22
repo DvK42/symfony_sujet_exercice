@@ -28,8 +28,11 @@
             <div class="mb-6">
                 <label for="password" class="block text-sm font-medium text-gray-700">Mot de passe</label>
                 <input type="password" id="password" name="_password" 
-                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" 
+                       class="mt-1 self-right block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" 
                        required>
+                <a href="{{ path('app_forgot_password') }}" class="text-sm text-blue-600 hover:underline mt-2 block">
+                  Mot de passe oublié ?
+                </a>
             </div>
 
             <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">

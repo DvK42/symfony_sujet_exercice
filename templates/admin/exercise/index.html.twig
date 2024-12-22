@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des exercices{% endblock %}
+
+{% block content %}
+<div class="bg-gray-50 p-6 rounded-lg shadow-lg">
+    <h1 class="text-2xl font-bold mb-6 text-gray-800">Liste des exercices</h1>
+
+    <!-- Bouton Ajouter un exercice -->
+    <div class="mb-6">
+        <a href="{{ path('admin_exercise_new') }}" class="bg-indigo-600 text-white px-4 py-2 rounded shadow hover:bg-indigo-700">
+            + Ajouter un exercice
+        </a>
+    </div>
+
+    <!-- Table des exercices -->
+    <div class="overflow-x-auto">
+        <table class="min-w-full bg-white border border-gray-200 shadow-sm rounded-lg">
+            <thead class="bg-gray-100">
+                <tr>
+                    <th class="py-3 px-4 text-left text-gray-600 font-semibold">ID</th>
+                    <th class="py-3 px-4 text-left text-gray-600 font-semibold">Nom</th>
+                    <th class="py-3 px-4 text-left text-gray-600 font-semibold">Slug</th>
+                    <th class="py-3 px-4 text-center text-gray-600 font-semibold">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for exercise in exercises %}
+                    <tr class="border-t">
+                        <td class="py-3 px-4 text-gray-700">{{ exercise.id }}</td>
+                        <td class="py-3 px-4 text-gray-700">{{ exercise.name }}</td>
+                        <td class="py-3 px-4 text-gray-700">{{ exercise.slug }}</td>
+                        <td class="py-3 px-4 text-center">
+                            <a href="{{ path('admin_exercise_show', {'id': exercise.id}) }}" class="text-blue-600 hover:underline">Voir</a>
+                            <a href="{{ path('admin_exercise_edit', {'id': exercise.id}) }}" class="text-green-600 hover:underline ml-4">Modifier</a>
+                            <form method="post" action="{{ path('admin_exercise_delete', {'id': exercise.id}) }}" style="display:inline;" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet exercice ?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ exercise.id) }}">
+                                <button type="submit" class="text-red-600 hover:underline ml-4">Supprimer</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="6" class="text-center py-3 text-gray-500 italic">Aucun exercice trouvé.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

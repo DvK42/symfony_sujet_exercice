@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 p-6">
+    <h1 class="text-2xl font-bold text-gray-800 mb-6">Tableau de bord</h1>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Card Utilisateurs -->
+        <div class="bg-white shadow-lg rounded-lg p-6">
+            <h2 class="text-xl font-semibold text-gray-800">Utilisateurs</h2>
+            <p class="text-gray-500">Nombre total d'utilisateurs :</p>
+            <p class="text-3xl font-bold text-indigo-600">{{ totalUsers }}</p>
+        </div>
+        <!-- Card Exercices -->
+        <div class="bg-white shadow-lg rounded-lg p-6">
+            <h2 class="text-xl font-semibold text-gray-800">Exercices</h2>
+            <p class="text-gray-500">Nombre total d'exercices :</p>
+            <p class="text-3xl font-bold text-indigo-600">{{ totalExercises }}</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

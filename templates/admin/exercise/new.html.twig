@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer un nouvel exercice{% endblock %}
+
+{% block content %}
+<div class="bg-gray-50 p-6 rounded-lg shadow-lg mx-auto">
+    <h1 class="text-2xl font-bold mb-6 text-gray-800">Créer un nouvel exercice</h1>
+
+    <!-- Formulaire de création -->
+    <div class="bg-white p-6 rounded-lg shadow-sm">
+        {{ include('admin/exercise/_form.html.twig', { 'button_label': 'Créer' }) }}
+    </div>
+
+    <!-- Lien retour -->
+    <div class="mt-6">
+        <a href="{{ path('admin_exercise_index') }}" class="text-indigo-600 hover:underline">
+            ← Retour à la liste
+        </a>
+    </div>
+</div>
+{% endblock %}
